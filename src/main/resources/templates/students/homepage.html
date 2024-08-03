@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .col-sm {
+            border-style: solid;
+            background-color: skyblue;
+            margin: 20px;
+        }
+        #students-icon, #violations-icon {
+            margin-left: 50px;
+        }
+    </style>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5097e0fb9c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">STUDENTS VIOLATION</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Homepage<span class="sr-only">(current)</span></a>
+                </li>
+                    <form th:action="@{/studentsViolation/logout}" method="post" id="logout-form">
+                        <a class="nav-link" href="#" onclick="formSubmit(1)">Logout</a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="titlePage">
+            <h1>STUDENT'S HOMEPAGE</h1>
+            <h1 th:text="'Firstname: '+${session.name}"></h1>
+            <h1 th:text="'Section: '+${session.courseYear}"></h1>
+            <h1 th:text="'Firstname: '+${session.program}"></h1>
+
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <h3>Academic Year/Semester</h3>
+                    <h3>2024-2025 1ST SEM</h3>
+                </div>
+                <div class="col-sm">
+                    <h3>Total Students <i class="fa-regular fa-user" id="students-icon"></i></h3>
+                    <h3>10</h3>
+                </div>
+                <div class="col-sm">
+                    <h3>Total Violations <i class="fa-solid fa-exclamation" id="violations-icon"></i></h3>
+                    <h3>10</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    // Retrieve the alert message from the URL parameter
+    var unauthorizedAccess = /*[[${param.unauthorizedAccess}]]*/ null;
+    var errorMessage = /*[[${param.errorMessage}]]*/ null;
+
+    // Display the alert if a message is provided
+    if (unauthorizedAccess) {
+        Swal.fire({
+            title: 'Unauthorized Access',
+            text: unauthorizedAccess,
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+        // Clear the URL parameters
+        var url = new URL(window.location.href);
+        url.searchParams.delete('unauthorizedAccess');
+        window.history.replaceState(null, null, url.pathname + url.search);
+    }
+    if (errorMessage) {
+        Swal.fire({
+            title: 'Error',
+            text: errorMessage,
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+        // Clear the URL parameters
+        var url = new URL(window.location.href);
+        url.searchParams.delete('errorMessage');
+        window.history.replaceState(null, null, url.pathname + url.search);
+    }
+    function formSubmit(formType) {
+        if (formType === 1) {
+            document.getElementById('logout-form').submit();
+        } else if (formType === 2) {
+            document.getElementById('users-form').submit();
+        }
+    }
+    /*]]>*/
+    </script>
+
+</body>
+</html>
